@@ -21,8 +21,10 @@ Clonez ce dépôt et installez les paquets nécessaires :
 git clone https://github.com/MarinetHENEIN/ML-project-.git
 cd ML-project-
 pip install -r requirements.txt
+```
 
-### Utilisation
+### Configuration
+
 Pour exécuter le script de bout en bout :
 
 ```python
