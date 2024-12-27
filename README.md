@@ -18,6 +18,6 @@ Avoir Python installé ainsi que les bibliothèques suivantes :
 Clonez ce dépôt et installez les paquets nécessaires :
 
 ```bash
-git clone <URL du dépôt>
-cd <nom du répertoire>
+git clone https://github.com/MarinetHENEIN/ML-project-.git
+cd ML-project-
 pip install -r requirements.txt
