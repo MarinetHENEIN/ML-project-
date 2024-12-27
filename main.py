@@ -84,14 +84,20 @@ grid_search_gbm.fit(X_train, y_train)
 best_model_gbm = grid_search_gbm.best_estimator_
 print("Meilleurs paramètres pour Gradient Boosting :", grid_search_gbm.best_params_)
 
-# 5. Évaluation des modèles
+# 5. Évaluation des deux modèles
+# Random Forest
 y_pred_rf = best_model_rf.predict(X_test)
 y_pred_proba_rf = best_model_rf.predict_proba(X_test)[:, 1]
+print("\nRapport de classification pour Random Forest :")
+print(classification_report(y_test, y_pred_rf))
 roc_auc_rf = roc_auc_score(y_test, y_pred_proba_rf)
 print("\nROC-AUC pour Random Forest :", roc_auc_rf)
 
+# Gradient Boosting
 y_pred_gbm = best_model_gbm.predict(X_test)
 y_pred_proba_gbm = best_model_gbm.predict_proba(X_test)[:, 1]
+print("\nRapport de classification pour Gradient Boosting :")
+print(classification_report(y_test, y_pred_gbm))
 roc_auc_gbm = roc_auc_score(y_test, y_pred_proba_gbm)
 print("\nROC-AUC pour Gradient Boosting :", roc_auc_gbm)
 
@@ -113,7 +119,7 @@ plt.plot(fpr_gbm, tpr_gbm, color='darkorange', lw=2, label=f'ROC curve (area = {
 plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
 plt.xlabel('False Positive Rate')
 plt.ylabel('True Positive Rate')
-plt.title('Receiver Operating Characteristic for Gradient Boosting')
+plt.title('Receiver Operating Characteristic')
 plt.legend(loc="lower right")
 plt.show()
 
@@ -121,17 +127,19 @@ plt.show()
 X_ablation = X.drop(columns=['IncomePerDependent'])
 X_train_ablation, X_test_ablation, y_train_ablation, y_test_ablation = train_test_split(X_ablation, y, test_size=0.2, random_state=42)
 
-model_ablation = GradientBoostingClassifier(random_state=42)
+model_ablation = RandomForestClassifier(random_state=42)
 param_grid_ablation = {
     'n_estimators': [50, 100, 200],
-    'learning_rate': [0.01, 0.1, 0.2],
-    'max_depth': [3, 5, 7]
+    'max_depth': [5, 10, 20]
 }
 grid_search_ablation = GridSearchCV(model_ablation, param_grid_ablation, cv=3, scoring='roc_auc', n_jobs=-1)
 grid_search_ablation.fit(X_train_ablation, y_train_ablation)
 best_model_ablation = grid_search_ablation.best_estimator_
+print("Meilleurs paramètres après ablation :", grid_search_ablation.best_params_)
 
 y_pred_ablation = best_model_ablation.predict(X_test_ablation)
 y_pred_proba_ablation = best_model_ablation.predict_proba(X_test_ablation)[:, 1]
+print("\nRapport de classification après ablation :")
+print(classification_report(y_test_ablation, y_pred_ablation))
 roc_auc_ablation = roc_auc_score(y_test_ablation, y_pred_proba_ablation)
 print("\nROC-AUC après ablation :", roc_auc_ablation)
