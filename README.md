@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 ### Configuration
 
-Pour exécuter le script de bout en bout :
+Pour exécuter le script:
 
 ```python
 python main.py
